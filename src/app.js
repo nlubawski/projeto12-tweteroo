@@ -1,7 +1,15 @@
 import express from "express"
+import cors  from "cors"
 
 const app = express()
 const port = 5000
+
+app.use(cors())
+
+app.post('/sign-up',(req,res) => {
+  users.push({username, avatar})
+  res.send(200)
+})
 
 app.get('/', (req, res) => {
   res.send('Hello')
