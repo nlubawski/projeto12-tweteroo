@@ -1,7 +1,7 @@
-import express from "express"
+import express, { query } from "express"
 import cors from "cors"
-import {users, tweets} from "./data.js"
-  
+import { users, tweets } from "./data.js"
+
 const app = express()
 const port = 5000
 
@@ -10,7 +10,7 @@ app.use(express.json())
 
 app.post('/sign-up', (req, res) => {
   const { avatar, username } = req.body
-  if(avatar === "" || username === ""){
+  if (avatar === "" || username === "") {
     res.status(400).send("Todos os campos são obrigatórios!")
   }
   users.push({ username, avatar })
@@ -18,12 +18,28 @@ app.post('/sign-up', (req, res) => {
 })
 
 app.get('/tweets', (req, res) => {
-  const lengthTweets = tweets.length;
+  const page = req.query.page;
+  const tweetsCopy = tweets.slice().reverse();
   let lastTweets;
-  if (lengthTweets <= 10) {
-    lastTweets = tweets.slice()
+  // console.log("pagina",page)
+  if (page) {
+    // console.log("to aqui na paginacao")
+    if (page < 1) {
+      res.status(400).send("Informe uma página válida!")
+    }
+    lastTweets = tweetsCopy.slice((page - 1) * 10, (page - 1) * 10 + 10)
+    // console.log("page", page)
+    // console.log("inicio", (page - 1) * 10)
+    // console.log("fim",(page - 1) * 10 + 10)
   } else {
-    lastTweets = tweets.slice(lengthTweets - 10)
+    const lengthTweets = tweetsCopy.length;
+    lastTweets;
+    if (lengthTweets <= 10) {
+      lastTweets = tweets.slice()
+    } else {
+      console.log(tweetsCopy)
+      lastTweets = tweetsCopy.slice(0,10)
+    }
   }
   const dataTweets = []
   lastTweets.forEach(lastTweet => {
@@ -32,7 +48,7 @@ app.get('/tweets', (req, res) => {
       dataTweets.push({ ...user, ...lastTweet })
     }
   })
-  res.send(dataTweets.reverse())
+  res.send(dataTweets)
 })
 
 app.post('/tweets', (req, res) => {
@@ -46,7 +62,6 @@ app.post('/tweets', (req, res) => {
     res.sendStatus(200)
   }
 })
-
 
 app.listen(port, () => {
   console.log(`Rodando na porta ${port}`)
