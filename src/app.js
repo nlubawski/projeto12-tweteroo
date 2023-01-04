@@ -8,11 +8,11 @@ const port = 5000
 app.use(cors())
 app.use(express.json())
 
-
-
-
 app.post('/sign-up', (req, res) => {
   const { avatar, username } = req.body
+  if(avatar === "" || username === ""){
+    res.status(400).send("Todos os campos são obrigatórios!")
+  }
   users.push({ username, avatar })
   res.sendStatus(200)
 })
