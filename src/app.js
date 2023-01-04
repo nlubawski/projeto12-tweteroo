@@ -91,13 +91,11 @@ app.get('/tweets', (req, res) => {
   }
   const dataTweets = []
   lastTweets.forEach(lastTweet => {
-    console.log(lastTweet.username)
     const user = users.find(u => u.username === lastTweet.username)
     if (user) {
       dataTweets.push({ ...user, ...lastTweet })
     }
   })
-  console.log("data", dataTweets)
   res.send(dataTweets.reverse())
 })
 
