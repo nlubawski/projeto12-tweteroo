@@ -21,16 +21,12 @@ app.get('/tweets', (req, res) => {
   const page = req.query.page;
   const tweetsCopy = tweets.slice().reverse();
   let lastTweets;
-  // console.log("pagina",page)
   if (page) {
-    // console.log("to aqui na paginacao")
     if (page < 1) {
       res.status(400).send("Informe uma página válida!")
     }
     lastTweets = tweetsCopy.slice((page - 1) * 10, (page - 1) * 10 + 10)
-    // console.log("page", page)
-    // console.log("inicio", (page - 1) * 10)
-    // console.log("fim",(page - 1) * 10 + 10)
+
   } else {
     const lengthTweets = tweetsCopy.length;
     lastTweets;
@@ -49,6 +45,26 @@ app.get('/tweets', (req, res) => {
     }
   })
   res.send(dataTweets)
+})
+
+app.get('/tweets/:username', (req, res) => {
+  const user = req.params.username
+  
+
+  const userdata = users.find(item => {
+    return item.username === user
+  })
+  if(userdata){
+    const tweetsData = tweets.filter(item => item.username === user)
+    const tweetsFull = []
+    tweetsData.forEach(item => {
+      tweetsFull.push({avatar:userdata.avatar, tweet: item.tweet, username: item.username})
+    })
+    console.log("to aqui", tweetsFull)
+    res.send(tweetsFull)
+  }
+  res.send([])
+
 })
 
 app.post('/tweets', (req, res) => {
