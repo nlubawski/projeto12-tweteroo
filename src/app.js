@@ -69,7 +69,7 @@ app.get('/tweets/:username', (req, res) => {
 })
 
 app.post('/tweets', (req, res) => {
-  const user = req.headers.user
+  const username = req.headers.user
   const { tweet } = req.body
   if(typeof tweet === 'undefined' || tweet === '' || typeof tweet !== 'string' ){
     res.sendStatus(400)
