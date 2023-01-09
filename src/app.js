@@ -17,7 +17,7 @@ app.post('/sign-up', (req, res) => {
     res.sendStatus(400)
   }
   users.push({ username, avatar })
-  res.sendStatus(200)
+  res.sendStatus(201)
 })
 
 app.get('/tweets', (req, res) => {
@@ -76,7 +76,7 @@ app.post('/tweets', (req, res) => {
   }
   else {
     tweets.push({ username, tweet })
-    res.sendStatus(200)
+    res.sendStatus(201)
   }
 })
 
