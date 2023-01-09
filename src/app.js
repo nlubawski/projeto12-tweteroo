@@ -13,6 +13,9 @@ app.post('/sign-up', (req, res) => {
   if (avatar === "" || username === "") {
     res.status(400).send("Todos os campos são obrigatórios!")
   }
+  if (typeof username !== "string" || typeof avatar === "undefined") {
+    res.sendStatus(400)
+  }
   users.push({ username, avatar })
   res.sendStatus(200)
 })
@@ -49,8 +52,6 @@ app.get('/tweets', (req, res) => {
 
 app.get('/tweets/:username', (req, res) => {
   const user = req.params.username
-  
-
   const userdata = users.find(item => {
     return item.username === user
   })
