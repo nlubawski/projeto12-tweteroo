@@ -70,6 +70,9 @@ app.get('/tweets/:username', (req, res) => {
 
 app.post('/tweets', (req, res) => {
   const { username, tweet } = req.body
+  if(typeof tweet === 'undefined' || tweet === '' || typeof tweet !== 'string' ){
+    res.sendStatus(400)
+  }
   const found = users.find(user => user.username === username)
   if (!found) {
     res.sendStatus(401)
